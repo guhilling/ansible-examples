@@ -1,0 +1,7 @@
+---
+- name: install
+  hosts: webservers
+  
+  tasks:
+    - import_tasks: users.yaml
+    - import_tasks: install.yaml

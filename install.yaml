@@ -1,0 +1,20 @@
+- name: Install Apache
+  vars:
+    supported_distros:
+      - RedHat
+      - Fedora
+  yum:
+    name: httpd
+    state: present
+  when: >
+    ( ansible_facts['distribution'] in supported_distros and
+    ansible_facts['memtotal_mb'] >= 512 )
+    or
+    ansible_facts['memtotal_mb'] >= 1024
+
+- name: Configure Apache
+  template:
+    src: templates/httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify:
+    - restart apache

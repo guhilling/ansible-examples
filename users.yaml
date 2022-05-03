@@ -1,0 +1,11 @@
+---
+- name: Create Users 
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    groups: "{{ item.groups | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ users }}"
+  register: users_result
+  tags:
+    - usermgmt

@@ -1,0 +1,10 @@
+users:
+  - name: gunnar
+    uid: 5555
+    groups:
+      - wheel
+  - name: chewie
+    uid: 5556
+  - name: carl
+    uid: 5557
+    state: absent

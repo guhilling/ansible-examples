@@ -1,0 +1,14 @@
+[webservers]
+servera
+serverb
+
+[dbservers:children]
+db_prod
+db_test
+
+[db_prod]
+serverc
+serverd
+
+[db_test]
+serverb

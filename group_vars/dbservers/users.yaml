@@ -4,6 +4,6 @@ users:
     groups:
       - wheel
   - name: lennie
-    uid: 5559
-  - name: carl
     state: absent
+  - name: carl
+    uid: 5557

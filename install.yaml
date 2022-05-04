@@ -1,20 +1,24 @@
-- name: Install Apache
-  vars:
-    supported_distros:
-      - RedHat
-      - Fedora
-  yum:
-    name: httpd
-    state: present
-  when: >
-    ( ansible_facts['distribution'] in supported_distros and
-    ansible_facts['memtotal_mb'] >= 512 )
-    or
-    ansible_facts['memtotal_mb'] >= 1024
+---
+- name: install apache
+  hosts: webservers
 
-- name: Configure Apache
-  template:
-    src: templates/httpd.conf.j2
-    dest: /etc/httpd/conf/httpd.conf
-  notify:
-    - restart apache
+  tasks:
+    - import_tasks: webserver_tasks.yml
+
+  post_tasks:
+    - name: debug author
+      debug:
+        msg: created by {{ author | default('lennie') }}
+        verbosity: 1
+
+    - name: check http access
+      delegate_to: "{{ item }}"
+      uri:
+        url: "http://{{ ansible_hostname }}:8080"
+      loop: "{{ groups['dbservers'] }}"
+
+  handlers:
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted

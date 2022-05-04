@@ -1,7 +1,7 @@
 ---
-- name: install
-  hosts: webservers
-  
-  tasks:
-    - import_tasks: users.yaml
-    - import_tasks: install.yaml
+- import_playbook: users.yaml
+  vars:
+    author: gunnar
+- import_playbook: install.yaml
+  vars:
+    apache_port: 8080

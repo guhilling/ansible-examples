@@ -3,12 +3,8 @@ servera
 serverb
 
 [dbservers:children]
-db_prod
-db_test
+db_prod 
 
 [db_prod]
-serverc
-serverd
-
-[db_test]
-serverb
+db_prod_a ansible_host=serverc.lab.example.com
+db_prod_b ansible_host=serverd.lab.example.com

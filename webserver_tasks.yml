@@ -1,0 +1,33 @@
+---
+- name: Install Apache
+  yum:
+    name: httpd
+    state: present
+
+- name: Configure Apache
+  template:
+    src: templates/httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify:
+    - restart apache
+    
+- name: allow access
+  firewalld:
+    port: 8080/tcp
+    state: enabled
+    immediate: true
+    permanent: true
+
+- name: add index.html
+  copy:
+    content: "<h1>Hello, World!</h1>"
+    dest: /var/www/html/index.html
+    mode: 0644
+    owner: root
+    group: apache
+
+- name: enable apache
+  service:
+    name: httpd
+    state: started
+    enabled: true

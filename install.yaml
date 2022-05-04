@@ -13,9 +13,24 @@
 
     - name: check http access
       delegate_to: "{{ item }}"
+      become: false
       uri:
         url: "http://{{ ansible_hostname }}:8080"
       loop: "{{ groups['dbservers'] }}"
+      register: http_access_checks
+
+    - name: output check results
+      delegate_to: localhost
+      become: false
+      copy:
+        content: >
+          {{ http_access_checks
+          | json_query('results[*].invocation')
+          | to_nice_json }}"
+        dest: "/tmp/http_results_{{ ansible_hostname }}.json"
+        mode: 0640
+        backup: true
+      changed_when: false
 
   handlers:
     - name: restart apache
